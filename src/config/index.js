@@ -1,13 +1,13 @@
-// src/config/db.js
+
 const mongoose = require("mongoose");
 const ENV = require("./env");
 
 const connectDB = async () => {
   try {
     const conn = await mongoose.connect(ENV.MONGO_URI);
-    console.log(`✅ MongoDB Connected: ${conn.connection.host}`);
+    console.log(` MongoDB Connected: ${conn.connection.host}`);
   } catch (error) {
-    console.error("❌ Error connecting to MongoDB:", error.message);
+    console.error(" Error connecting to MongoDB:", error.message);
     process.exit(1); // Stop app if DB fails
   }
 };

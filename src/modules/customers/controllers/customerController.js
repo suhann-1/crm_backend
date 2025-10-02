@@ -1,4 +1,5 @@
 const Customer = require("../model/Customer");
+const Note = require("../model/Note");
 
 // Create a new customer
 exports.createCustomer = async (req, res) => {
@@ -20,6 +21,26 @@ exports.getAllCustomers = async (req, res) => {
         res.status(500).json({ error: err.message });
     }
 };
+// //history of each cutomer
+// exports.getCustomerFullDetails = async (req, res) => {
+//   try {
+//     const customerId = req.params.id;
+
+//     const customer = await Customer.findById(customerId);
+//     const notes = await Note.find({ customerId }).sort({ createdAt: -1 });
+//     const orders = await Order.find({ customerId }).sort({ orderDate: -1 });
+
+//     res.json({
+//       customer,
+//       history: {
+//         notes,
+//         orders
+//       }
+//     });
+//   } catch (error) {
+//     res.status(500).json({ error: error.message });
+//   }
+// };
 
 // Get a customer by ID
 exports.getCustomerById = async (req, res) => {
@@ -32,6 +53,33 @@ exports.getCustomerById = async (req, res) => {
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
+};
+//get cust details
+exports.getCustomerDetails = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    // 1. Find customer
+    const customer = await Customer.findById(id);
+    if (!customer) {
+      return res.status(404).json({ error: "Customer not found" });
+    }
+
+    // 2. Find notes for this customer
+    const notes = await Note.find({ customerId: id }).sort({ createdAt: -1 });
+
+
+
+    // 4. Return combined data
+    res.json({
+      customer,
+      history: {
+        notes
+      }
+    });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
 };
 
 // Update customer
@@ -74,7 +122,7 @@ exports.getCustomersByStatus = async (req, res) => {
   }
 };
 
-// Update Customer Status (manually change group)
+// Update Customer Status 
 exports.updateCustomerStatus = async (req, res) => {
   try {
     const { status } = req.body;
@@ -111,8 +159,10 @@ exports.autoUpdateStatus = async (req, res) => {
       await customer.save();
     }
 
-    res.json({ message: "Customer statuses auto-updated ✅" });
+    res.json({ message: "Customer statuses auto-updated " });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 };
+
+

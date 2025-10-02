@@ -9,7 +9,7 @@ const addressSchema = new mongoose.Schema({
 }, { _id: false });
 
 const customerSchema = new mongoose.Schema({
-    customer_id: { type: String, required: true, unique: true },
+    // customer_id: { type: String, required: true, unique: true },
     first_name: { type: String, required: true },
     last_name: { type: String, required: true },
     email: { type: String, required: true, unique: true },

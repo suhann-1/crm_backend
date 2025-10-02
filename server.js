@@ -17,12 +17,19 @@ app.get("/", (req, res) => {
   res.send("CRM Backend is running...");
 });
 
-const authRoutes = require("./src/modules/auth/auth.routes");
-const userRoutes = require("./src/modules/users/user.routes");
+
+const userRoutes = require("./src/modules/users/routes/userRoutes");
 const customerRoutes = require("./src/modules/customers/routes/customerRoutes");
-app.use("/api/auth", authRoutes);
+const noteRoutes = require("./src/modules/note/routes/noteRoutes");
+const orderRoutes = require("./src/modules/orders/routes/orderRoutes");
+const dashboardRoutes = require("./src/modules/dashboard/routes/dashboardRoutes");
+
 app.use("/api/users", userRoutes); 
-app.use("/api/customers",customerRoutes),
+app.use("/api/customers",customerRoutes);
+app.use("/api/notes",noteRoutes);
+app.use("/api/orders", orderRoutes);
+app.use("/api/dashboard", dashboardRoutes);
 app.listen(ENV.PORT, () => {
-  console.log(`🚀 Server running on http://localhost:${ENV.PORT}`);
+  console.log(` Server running on http://localhost:${ENV.PORT}`);
 });
+
